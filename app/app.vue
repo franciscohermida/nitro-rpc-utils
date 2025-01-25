@@ -1,14 +1,22 @@
 <template>
-  <div>{{ data }}</div>
+  <div>{{ example1 }}</div>
+  <div>{{ example2 }}</div>
 </template>
 
 <script setup lang="ts">
 import type { AppRouter } from "~~/shared/appRouter";
 
-const fetchApi = createFetchApi<AppRouter>();
-const { data } = useAsyncData(async () => {
+const rpcClient = createNitroRPCClient<AppRouter>();
+
+const { data: example1 } = useAsyncData(async () => {
   // Inspect the response type and autocompletion of fetchApi parameters. Date was serialized/deserialized with superjson
-  const response = await fetchApi("/api/example", { data: "hello world" });
+  const response = await rpcClient("/api/example1", { data: "hello world" });
+  return response;
+});
+
+const { data: example2 } = useAsyncData(async () => {
+  // Inspect the response type and autocompletion of fetchApi parameters. Date was serialized/deserialized with superjson
+  const response = await rpcClient("/api/example2");
   return response;
 });
 </script>

@@ -1,8 +1,10 @@
-import type { RouteExample } from "~~/server/api/example";
+import type { RouteExample1 } from "~~/server/api/example1";
+import type { RouteExample2 } from "~~/server/api/example2";
 
 const routes = [
   // register routes on this array
-  RegisterRoute<RouteExample>(),
+  RegisterRoute<RouteExample1>(),
+  RegisterRoute<RouteExample2>(),
 ];
 
-export type AppRouter = RouteDataFromRoutes<typeof routes>;
+export type AppRouter = RouterFromRoutes<typeof routes>;

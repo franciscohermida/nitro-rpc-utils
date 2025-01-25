@@ -1,9 +1,9 @@
 import { yup } from "~~/shared/yup";
 
-export type RouteExample = typeof e._type;
+export type RouteExample1 = typeof e._type;
 
 const e = defineRPCEventHandler(
-  "/api/example",
+  "/api/example1",
   yup
     .object({
       data: yup.string().required(),
@@ -16,4 +16,4 @@ const e = defineRPCEventHandler(
   }
 );
 
-export default e.handler;
+export default e.eventHandler;

@@ -1,7 +1,7 @@
-import { AnySchema } from "yup";
-import type { EventHandler, H3Event, EventHandlerRequest } from "h3";
+import type { H3Event, EventHandlerRequest } from "h3";
+import type { InternalApi } from "nitropack/types";
+import type { AnySchema } from "yup";
 import { yup } from "~~/shared/yup";
-import type { NitroFetchRequest, InternalApi } from "nitropack/types";
 import { superjson } from "~~/shared/superjson";
 
 type NitroFetchRequestStringLiterals = Exclude<keyof InternalApi, `/_${string}` | `/api/_${string}`>;
@@ -11,7 +11,7 @@ type Route = {
   input: any;
   output: any;
 };
-export type RouteDataFromRoutes<TRoutes extends Route[]> = {
+export type RouterFromRoutes<TRoutes extends Route[]> = {
   [T in TRoutes[number] as T["path"]]: {
     input: T["input"];
     output: T["output"];
@@ -56,7 +56,7 @@ export function defineRPCEventHandler<
   });
 
   return {
-    handler: e,
+    eventHandler: e,
     _type: {
       path: path as unknown as Readonly<P>,
       input: undefined as S extends AnySchema ? yup.InferType<S> : undefined,
