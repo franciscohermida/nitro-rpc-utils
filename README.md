@@ -2,8 +2,6 @@
 
 A lightweight(POC) TypeScript RPC implementation for Nitro/Nuxt projects, inspired by tRPC. This proof-of-concept demonstrates how to achieve end-to-end type safety with Nitro's event handlers.
 
-Always enjoyed working with TRPC and now that I'm working on a nuxt project was curious if I could create something similar. Put this quick POC together after studying for a couple of hours testing deepseek AI for the 1st time.
-
 > ⚠️ **Note**: This is a proof-of-concept and not production ready.
 
 ## Features
@@ -17,6 +15,12 @@ Always enjoyed working with TRPC and now that I'm working on a nuxt project was 
   - Output types
 
 ## Installation
+
+Install dependencies:
+```bash
+pnpm add yup
+pnpm add superjson
+```
 
 Copy the following directories into your project:
 ```bash
