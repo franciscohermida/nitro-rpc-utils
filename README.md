@@ -1,75 +1,88 @@
-# Nuxt Minimal Starter
+# Nitro RPC Utils
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A lightweight(POC) TypeScript RPC implementation for Nitro/Nuxt projects, inspired by tRPC. This proof-of-concept demonstrates how to achieve end-to-end type safety with Nitro's event handlers.
 
-## Setup
+Always enjoyed working with TRPC and now that I'm working on a nuxt project was curious if I could create something similar. Put this quick POC together after studying for a couple of hours testing deepseek AI for the 1st time.
 
-Make sure to install dependencies:
+> ⚠️ **Note**: This is a proof-of-concept and not production ready.
 
+## Features
+
+- Full end-to-end type safety with TypeScript
+- Automatic serialization/deserialization using SuperJSON
+- Input validation using Yup (easily adaptable to Zod or other validators)
+- Autocomplete support for:
+  - API route paths
+  - Input types
+  - Output types
+
+## Installation
+
+Copy the following directories into your project:
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+shared/
+server/utils/
+app/utils/
 ```
 
-## Development Server
+## Usage
 
-Start the development server on `http://localhost:3000`:
+### 1. Server-side Setup
 
-```bash
-# npm
-npm run dev
+Create event handlers using `defineRPCEventHandler`. Example (`server/api/example1.ts`):
 
-# pnpm
-pnpm dev
+```typescript
+import { yup } from "~~/shared/yup";
 
-# yarn
-yarn dev
+export type RouteExample1 = typeof e._type;
 
-# bun
-bun run dev
+const e = defineRPCEventHandler(
+  "/api/example1",
+  yup
+    .object({
+      data: yup.string().required(),
+    })
+    .required(),
+
+  async (event, { input }) => {
+    console.log("/api/example input", input);
+    return { msg: input.data, date: new Date() };
+  }
+);
+
+export default e.eventHandler;
+```
+> **Important**: Remember to export the type for each event handler.
+
+### 2. Register Routes
+
+Create a router by registering your routes (`shared/appRouter.ts`):
+
+```typescript
+import type { RouteExample1 } from "~~/server/api/example1";
+import type { RouteExample2 } from "~~/server/api/example2";
+
+const routes = [
+  // register routes on this array
+  RegisterRoute<RouteExample1>(),
+  RegisterRoute<RouteExample2>(),
+];
+
+export type AppRouter = RouterFromRoutes<typeof routes>;
 ```
 
-## Production
+### 3. Client-side Usage
 
-Build the application for production:
+Create and use the RPC client:
 
-```bash
-# npm
-npm run build
+```typescript
+import type { AppRouter } from "~~/shared/appRouter";
 
-# pnpm
-pnpm build
+const rpcClient = createNitroRPCClient<AppRouter>();
 
-# yarn
-yarn build
-
-# bun
-bun run build
+// Example usage with full type safety
+const data = await rpcClient("/api/example1", { data: "hello world" });
+// - Path autocomplete
+// - Input type validation
+// - Fully typed response
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
