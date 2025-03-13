@@ -90,3 +90,6 @@ const data = await rpcClient("/api/example1", { data: "hello world" });
 // - Input type validation
 // - Fully typed response
 ```
+
+### 4. Todo
+- [ ] Improve based on this video: https://www.youtube.com/watch?v=FI4zIxsr0Uw
